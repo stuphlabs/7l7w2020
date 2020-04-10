@@ -1,5 +1,14 @@
-# Description
-Problem being solved.
+---
+name: Pull Request
+about: Create a report to help us improve
+title: 'Quick Description'
+labels: ''
+assignees: ''
 
-# Related Issues
-- #1
+---
+
+**Description**
+A clear and concise description of what the patch is doing.
+
+**Related Issues**
+- Fixes #.
