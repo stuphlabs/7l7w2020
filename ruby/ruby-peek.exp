@@ -1,0 +1,45 @@
+
+# damn ruby is slow!
+set timeout 15
+
+set prompt {(?n)^irb[^\s*">]*[*">] }
+
+set command "/usr/bin/docker run -it --rm ruby:7l7w2020"
+
+eval spawn $command
+
+expect_before {
+	-re {^\x1b\[[0-9]*G} {
+		# ANSI cursor horizontal absolute which says to move the cursor
+		# to column 1. We probably don't need to do anything about this.
+		exp_continue
+	}
+	-re {^\x1b\[[0-9]*K} {
+		# ANSI erase in line. Since no value came before K, erases from
+		# the cursor to the end of the line. We probably don't need to
+		# do anything about this.
+		exp_continue
+	}
+	-re {^\x1b\[6n} {
+		# ANSI device status report, an annoying piece of shit that
+		# often demands an answer about where the cursor is and holds
+		# the terminal hostage until it gets an answer it likes. To get
+		# it to just shut up and get out of the way, let's send an ANSI
+		# cursor position report that always says the cursor is at 1:1.
+		send -raw "\x1b\[1;1R"
+		exp_continue
+	}
+}
+
+expect -re $prompt
+send "properties = \['object oriented', 'duck typed', 'productive', 'fun'\]\r"
+
+
+#expect -re $prompt
+expect "irb(main):002:0> "
+send "properties\r"
+expect "=> \['object oriented', 'duck typed', 'productive', 'fun'\]"
+
+expect -re $prompt
+send "quit\r"
+expect eof

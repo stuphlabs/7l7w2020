@@ -1,5 +1,6 @@
 DOCKER = docker
 DOCKER_IMAGE_TAG = 7l7w2020
+EXPECT = expect
 
 cleanfiles :=
 distcleanfiles :=
@@ -36,3 +37,6 @@ docker_images: $(image_targets)
 
 $(langs): %: .FORCE docker_image/%
 	@echo 'No language specific target yet for $*'
+
+ruby: docker_image/ruby ruby/ruby-peek.exp
+	$(EXPECT) ruby/ruby-peek.exp
