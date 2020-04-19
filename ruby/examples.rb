@@ -6,6 +6,6 @@ puts "Hello, Ruby.".index("Ruby")
 
 i=0
 while i < 10
-puts "Austin"
-i=i+1
+	puts "Austin"
+	i=i+1
 end
